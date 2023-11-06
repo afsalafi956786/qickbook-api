@@ -539,5 +539,28 @@ export async function getOneWishlist(req,res){
   }
 }
 
+export async function deleteWishlist (req,res){
+  try{
 
+    const roomId =req.params.roomId;
+
+    const userId = req.userId;
+
+    const user = await userModel.findById(userId);
+    if(!user){
+      return res.json({ status:"false", message: 'User not found '})
+    }
+     
+    const deletedItem = await wishListModel.findOneAndDelete({ userId,roomId});
+
+    if(deletedItem){
+    return  res.json({status: "success", message: "Room removed from wishlist"  })
+    }else{
+     return  res.json({ status: "false", message: 'Room not found in user wishlist' });
+    }
+  }catch(error){
+    console.log(error.message)
+    return { status: "failed", message: "Network error" };
+  }
+}
 
