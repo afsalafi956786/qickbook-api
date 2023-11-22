@@ -564,3 +564,35 @@ export async function deleteWishlist (req,res){
   }
 }
 
+export async function addWishList (req,res){
+  try{
+   
+    const {roomId , vendorId }= req.body;
+    const userId = req.userId;
+    const user = await userModel.findById(userId);
+    if(!user){
+      return res.json({ status:"false", message: 'User not found '})
+    }
+
+    const existWishList = await wishListModel.findOne({ userId,roomId});
+
+    if(existWishList){
+     return res.json({ statuse: "failed", message: "Room already in your wishlist" });
+    }
+    const wishList = new wishListModel({
+      roomId,
+      userId,
+      vendorId,
+    })
+    await wishList.save();
+    res.json({
+      status: "success",
+      message: "Room added to wishlist successfully",
+      wishList
+    });
+
+  }catch(error){
+    console.log(error.message)
+    return { status: "failed", message: "Network error" };
+  }
+}
