@@ -8,6 +8,7 @@ import reviewModel from "../models/reviewSchema.js";
 import couponModel from "../models/couponShema.js";
 import moment from "moment/moment.js";
 import vendorModel from "../models/vendorShema.js";
+import wishListModel from "../models/wishlist.js";
 
 export async function userCheck(req, res) {
   try {
